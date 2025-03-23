@@ -1,0 +1,1 @@
+jpackage --input target/ --main-jar wordle-1.0-SNAPSHOT.jar --main-class application.wordle.Main --module-path "path/to/javafx-jmods" --add-modules javafx.controls,javafx.fxml --type exe --name Wordle
