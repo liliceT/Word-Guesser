@@ -9,13 +9,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,9 +27,9 @@ public class GameController {
     public List<String> OrdListe;
 
     public StringBuilder OrdGæt;
-    public List<String> GrønneBogstaver = new ArrayList<>();
-    public List<String> GuleBogstaver = new ArrayList<>();
+    public static String RigtigOrd = "";
 
+    public Scene GameScene;
     public SplitPane MainPane;
     public SplitPane[] WordPane;
     public Label[][] BogstavBox;
@@ -41,10 +42,6 @@ public class GameController {
 
     public int AktivLinje = 0;
     public int AktivBogstavBox = 0;
-
-    public Scene GameScene;
-
-    public static String RigtigOrd = "";
 
     @FXML
     public void initialize() {
@@ -103,6 +100,7 @@ public class GameController {
         }
         JsonReader = new JsonReader(JsonFilePath);
         RigtigOrd = JsonReader.getRandomWord();
+        RigtigOrd = "ABOVE";
     }
 
     //Tilsluttet alle taster på det virtuelle keyboard
@@ -198,12 +196,11 @@ public class GameController {
             if (RigtigOrd.charAt(i) == OrdGæt.charAt(i)) {
                 letterFoundInRigtigOrd[i] = true;
                 resultat[i] = "Grøn";
-
             } else if (RigtigOrd.contains(String.valueOf(OrdGæt.charAt(i)))) {
 
                 for (int j = 0; j < længdeAfOrd; j++) {
 
-                    if (RigtigOrd.charAt(j) == OrdGæt.charAt(i) && !letterFoundInRigtigOrd[j]) {
+                    if (OrdGæt.charAt(i) == RigtigOrd.charAt(j) && !letterFoundInRigtigOrd[j]) {
                         letterFoundInRigtigOrd[j] = true;
                         resultat[i] = "Gul";
                         break;
@@ -219,12 +216,18 @@ public class GameController {
 
         for (int i = 0; i < længdeAfOrd; i++) {
             switch (resultat[i]) {
-                case "Grøn" ->
-                        BogstavBox[AktivLinje][i].setStyle("-fx-background-color:  #77dd76; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
-                case "Gul" ->
-                        BogstavBox[AktivLinje][i].setStyle("-fx-background-color: #ebed74; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
-                case "Grå" ->
-                        BogstavBox[AktivLinje][i].setStyle("-fx-background-color: #787c7e; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
+                case "Grøn" -> {
+                    BogstavBox[AktivLinje][i].setBackground(Background.fill(Paint.valueOf("#77dd76")));
+                    BogstavBox[AktivLinje][i].setStyle("-fx-background-color: #77dd76; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
+                }
+                case "Gul" -> {
+                    BogstavBox[AktivLinje][i].setBackground(Background.fill(Paint.valueOf("#ebed74")));
+                    BogstavBox[AktivLinje][i].setStyle("-fx-background-color: #ebed74; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
+                }
+                case "Grå" -> {
+                    BogstavBox[AktivLinje][i].setBackground(Background.fill(Paint.valueOf("#787c7e")));
+                    BogstavBox[AktivLinje][i].setStyle("-fx-background-color: #787c7e; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
+                }
             }
         }
 
@@ -232,18 +235,22 @@ public class GameController {
     }
 
     public void FarveTaster() {
-        for (int i = 0; i < 28; i++) {
-            Label label = (Label) alfabetet.getChildren().get(i);
+        for (int i = 0; i < længdeAfOrd; i++) {
 
-            if (GrønneBogstaver.contains(label.getText())) {
-                label.setStyle("-fx-background-color: #77dd76; -fx-border-color: #000000;");
+            for (int j = 0; j < 28; j++) {
+                Label label = (Label) alfabetet.getChildren().get(j);
 
-            } else if (GuleBogstaver.contains(label.getText())) {
-                label.setStyle("-fx-background-color: #ebed74; -fx-border-color: #000000;");
+                if (Objects.equals(label.getText(), String.valueOf(OrdGæt.charAt(i))) && Objects.equals(BogstavBox[AktivLinje][i].getBackground(), Background.fill(Paint.valueOf("#77dd76")))) {
+                    label.setStyle("-fx-background-color: #77dd76; -fx-border-color: #000000;");
 
-            } else if (OrdGæt.toString().contains(label.getText())) {
-                label.setStyle("-fx-background-color: #787c7e; -fx-border-color: #000000;");
+                } else if (Objects.equals(label.getText(), String.valueOf(OrdGæt.charAt(i))) && Objects.equals(BogstavBox[AktivLinje][i].getBackground(), Background.fill(Paint.valueOf("#ebed74")))) {
+                    if (!Objects.equals(BogstavBox[AktivLinje][i].getBackground(), Background.fill(Paint.valueOf("#77dd76")))) {
+                        label.setStyle("-fx-background-color: #ebed74; -fx-border-color: #000000;");
+                    }
 
+                } else if (Objects.equals(label.getText(), String.valueOf(OrdGæt.charAt(i))) && Objects.equals(BogstavBox[AktivLinje][i].getBackground(), Background.fill(Paint.valueOf("#787c7e")))) {
+                    label.setStyle("-fx-background-color: #787c7e; -fx-border-color: #000000;");
+                }
             }
         }
     }
