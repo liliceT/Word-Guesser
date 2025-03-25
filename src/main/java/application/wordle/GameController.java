@@ -100,7 +100,6 @@ public class GameController {
         }
         JsonReader = new JsonReader(JsonFilePath);
         RigtigOrd = JsonReader.getRandomWord();
-        RigtigOrd = "ABOVE";
     }
 
     //Tilsluttet alle taster på det virtuelle keyboard
