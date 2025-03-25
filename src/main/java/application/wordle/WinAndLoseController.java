@@ -10,7 +10,7 @@ public class WinAndLoseController {
     public Label DetErRigtigtOrd;
 
     public void initialize() {
-        DetErRigtigtOrd.setText(GameController.ordet);
+        DetErRigtigtOrd.setText(GameController.RigtigOrd);
     }
 
     public void PlayAgain() throws IOException {

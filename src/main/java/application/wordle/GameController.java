@@ -44,7 +44,7 @@ public class GameController {
 
     public Scene GameScene;
 
-    public static String ordet = "";
+    public static String RigtigOrd = "";
 
     @FXML
     public void initialize() {
@@ -102,7 +102,9 @@ public class GameController {
             case 6 -> JsonFilePath = "six-letter-words.json";
         }
         JsonReader = new JsonReader(JsonFilePath);
-        ordet = JsonReader.getRandomWord();
+        RigtigOrd = JsonReader.getRandomWord();
+        RigtigOrd = "WOUND";
+        System.out.println(RigtigOrd);
     }
 
     //Tilsluttet alle taster på det virtuelle keyboard
@@ -180,7 +182,7 @@ public class GameController {
 
     public void SammenlignOrd() throws IOException {
 
-        if (OrdGæt.toString().equals(ordet)) {
+        if (OrdGæt.toString().equals(RigtigOrd)) {
             new SkiftScene("Win.fxml");
             new SoundPlayer("Win");
             Main.stage.setX((double) Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Main.stage.getWidth() / 2);
@@ -190,24 +192,45 @@ public class GameController {
             Main.stage.setX((double) Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Main.stage.getWidth() / 2);
         }
 
+        boolean[] letterFoundInRigtigOrd = new boolean[længdeAfOrd];
+        String[] resultat = new String[længdeAfOrd];
+
         for (int i = 0; i < længdeAfOrd; i++) {
-            if (ordet.charAt(i) == OrdGæt.charAt(i)) {
 
-                BogstavBox[AktivLinje][i].setStyle("-fx-background-color:  #77dd76; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
-                GrønneBogstaver.add(String.valueOf(OrdGæt.charAt(i)));
+            if (RigtigOrd.charAt(i) == OrdGæt.charAt(i)) {
+                letterFoundInRigtigOrd[i] = true;
+                resultat[i] = "Grøn";
 
-            } else if (ordet.contains(String.valueOf(OrdGæt.charAt(i)))) {
+            } else if (RigtigOrd.contains(String.valueOf(OrdGæt.charAt(i)))) {
 
-                BogstavBox[AktivLinje][i].setStyle("-fx-background-color: #ebed74; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
-                GuleBogstaver.add(String.valueOf(OrdGæt.charAt(i)));
+                for (int j = 0; j < længdeAfOrd; j++) {
 
-            } else
+                    if (RigtigOrd.charAt(j) == OrdGæt.charAt(i) && !letterFoundInRigtigOrd[j]) {
+                        letterFoundInRigtigOrd[j] = true;
+                        resultat[i] = "Gul";
+                        break;
 
-                BogstavBox[AktivLinje][i].setStyle("-fx-background-color: #787c7e; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
+                    } else if (RigtigOrd.charAt(j) != OrdGæt.charAt(i)) {
+                        resultat[i] = "Grå";
+                    }
+                }
+            } else {
+                resultat[i] = "Grå";
+            }
+        }
+
+        for (int i = 0; i < længdeAfOrd; i++) {
+            switch (resultat[i]) {
+                case "Grøn" ->
+                        BogstavBox[AktivLinje][i].setStyle("-fx-background-color:  #77dd76; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
+                case "Gul" ->
+                        BogstavBox[AktivLinje][i].setStyle("-fx-background-color: #ebed74; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
+                case "Grå" ->
+                        BogstavBox[AktivLinje][i].setStyle("-fx-background-color: #787c7e; -fx-text-fill: #ffffff; -fx-font-family: System; -fx-font-weight: Normal; -fx-font-size: 50px;");
+            }
         }
 
         FarveTaster();
-
     }
 
     public void FarveTaster() {
