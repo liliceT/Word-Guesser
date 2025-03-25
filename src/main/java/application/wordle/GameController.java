@@ -22,13 +22,11 @@ import java.util.Objects;
 
 public class GameController {
 
+    public static String RigtigOrd = "";
     public JsonReader JsonReader;
     public String JsonFilePath = "";
     public List<String> OrdListe;
-
     public StringBuilder OrdGæt;
-    public static String RigtigOrd = "";
-
     public Scene GameScene;
     public SplitPane MainPane;
     public SplitPane[] WordPane;
