@@ -15,10 +15,13 @@ public class WinAndLoseController {
 
     public void PlayAgain() throws IOException {
         new SkiftScene("Home.fxml");
+
+        new SoundPlayer("Button");
         Main.stage.setX((double) Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Main.stage.getWidth() / 2);
     }
 
     public void ExitGame() {
+        new SoundPlayer("Button");
         System.exit(0);
     }
 

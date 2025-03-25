@@ -26,16 +26,19 @@ public class HomeController {
         Main.længdeAfOrd = Character.getNumericValue(selectedValue.charAt(0));
 
         new SkiftScene("Game.fxml");
+        new SoundPlayer("Button");
         Main.stage.setX((double) Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Main.stage.getWidth() / 2);
     }
 
     public void exitGame() {
+        new SoundPlayer("Button");
         System.exit(0);
     }
 
     public void howToPlay() throws IOException {
 
         new SkiftScene("HowToPlay.fxml");
+        new SoundPlayer("Button");
         Main.stage.setX((double) Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Main.stage.getWidth() / 2);
 
     }
