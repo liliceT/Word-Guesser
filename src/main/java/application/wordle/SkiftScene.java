@@ -9,11 +9,14 @@ import java.util.Objects;
 
 public class SkiftScene {
 
-    public SkiftScene(String FXMLfile) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource(FXMLfile)));
-        Scene scene = new Scene(root);
-        Main.stage.setScene(scene);
-        Main.stage.show();
+    public SkiftScene(String FXMLfile) {
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource(FXMLfile)));
+            Scene scene = new Scene(root);
+            Main.stage.setScene(scene);
+            Main.stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
-
 }

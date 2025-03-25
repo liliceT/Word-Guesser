@@ -3,7 +3,6 @@ package application.wordle;
 import javafx.scene.control.Label;
 
 import java.awt.*;
-import java.io.IOException;
 
 public class WinAndLoseController {
 
@@ -13,7 +12,7 @@ public class WinAndLoseController {
         DetErRigtigtOrd.setText(GameController.RigtigOrd);
     }
 
-    public void PlayAgain() throws IOException {
+    public void PlayAgain() {
         new SkiftScene("Home.fxml");
 
         new SoundPlayer("Button");

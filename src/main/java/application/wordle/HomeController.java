@@ -4,7 +4,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 
 import java.awt.*;
-import java.io.IOException;
 
 public class HomeController {
 
@@ -20,7 +19,7 @@ public class HomeController {
 
     }
 
-    public void playGame() throws IOException {
+    public void playGame() {
 
         String selectedValue = choiceBox.getValue();
         Main.længdeAfOrd = Character.getNumericValue(selectedValue.charAt(0));
@@ -35,7 +34,7 @@ public class HomeController {
         System.exit(0);
     }
 
-    public void howToPlay() throws IOException {
+    public void howToPlay() {
 
         new SkiftScene("HowToPlay.fxml");
         new SoundPlayer("Button");
