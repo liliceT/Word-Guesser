@@ -16,7 +16,6 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.awt.*;
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
@@ -123,13 +122,10 @@ public class GameController {
 
         if (Objects.equals(keyCode, "ENTER")) {
             if (CheckOrdErEtOrd()) {
-                try {
-                    SammenlignOrd();
-                    AktivLinje++;
-                    AktivBogstavBox = 0;
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                SammenlignOrd();
+                AktivLinje++;
+                AktivBogstavBox = 0;
+
             } else {
                 visError();
                 new SoundPlayer("NotAWord");
@@ -173,7 +169,7 @@ public class GameController {
         return OrdListe.contains(OrdGæt.toString());
     }
 
-    public void SammenlignOrd() throws IOException {
+    public void SammenlignOrd() {
 
         if (OrdGæt.toString().equals(RigtigOrd)) {
             new SkiftScene("Win.fxml");
@@ -252,7 +248,7 @@ public class GameController {
         }
     }
 
-    public void giveUp() throws IOException {
+    public void giveUp() {
 
         new SkiftScene("Lose.fxml");
         new SoundPlayer("Button");
