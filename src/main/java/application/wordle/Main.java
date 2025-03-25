@@ -15,6 +15,10 @@ public class Main extends Application {
 
     public static int længdeAfOrd;
 
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("Home.fxml")));
@@ -25,9 +29,5 @@ public class Main extends Application {
         stage.setScene(new Scene(root));
 
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }
