@@ -13,6 +13,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -137,6 +139,7 @@ public class GameController {
                 }
             } else {
                 visError();
+                new SoundPlayer("NotAWord");
             }
 
         } else if (Objects.equals(keyCode, "DELETE")) {
@@ -181,9 +184,11 @@ public class GameController {
 
         if (OrdGæt.toString().equals(ordet)) {
             new SkiftScene("Win.fxml");
+            new SoundPlayer("Win");
             Main.stage.setX((double) Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Main.stage.getWidth() / 2);
         } else if (AktivLinje == 5) {
             new SkiftScene("Lose.fxml");
+            new SoundPlayer("GameOver");
             Main.stage.setX((double) Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Main.stage.getWidth() / 2);
         }
 
@@ -227,6 +232,7 @@ public class GameController {
     public void giveUp() throws IOException {
 
         new SkiftScene("Lose.fxml");
+        new SoundPlayer("Button");
         Main.stage.setX((double) Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Main.stage.getWidth() / 2);
 
     }
