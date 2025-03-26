@@ -15,8 +15,6 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.util.List;
 import java.util.Objects;
@@ -152,7 +150,7 @@ public class GameController {
         errorText.setVisible(true);
 
         PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
-        pause.setOnFinished(event -> errorText.setVisible(false));
+        pause.setOnFinished(_ -> errorText.setVisible(false));
         pause.play();
 
     }
@@ -172,7 +170,6 @@ public class GameController {
     }
 
     public void SammenlignOrd() {
-
         if (OrdGæt.toString().equals(RigtigOrd)) {
             new SkiftScene("Win.fxml");
             new SoundPlayer("Win");
@@ -183,32 +180,35 @@ public class GameController {
             Main.stage.setX((double) Toolkit.getDefaultToolkit().getScreenSize().width / 2 - Main.stage.getWidth() / 2);
         }
 
-        boolean[] letterFoundInRigtigOrd = new boolean[længdeAfOrd];
+        boolean[] letterUsed = new boolean[længdeAfOrd];
         String[] resultat = new String[længdeAfOrd];
 
+        // Første loop: Find grønne (korrekte placeringer)
         for (int i = 0; i < længdeAfOrd; i++) {
-
             if (RigtigOrd.charAt(i) == OrdGæt.charAt(i)) {
-                letterFoundInRigtigOrd[i] = true;
                 resultat[i] = "Grøn";
-            } else if (RigtigOrd.contains(String.valueOf(OrdGæt.charAt(i)))) {
-
-                for (int j = 0; j < længdeAfOrd; j++) {
-
-                    if (OrdGæt.charAt(i) == RigtigOrd.charAt(j) && !letterFoundInRigtigOrd[j]) {
-                        letterFoundInRigtigOrd[j] = true;
-                        resultat[i] = "Gul";
-                        break;
-
-                    } else if (RigtigOrd.charAt(j) != OrdGæt.charAt(i)) {
-                        resultat[i] = "Grå";
-                    }
-                }
-            } else {
-                resultat[i] = "Grå";
+                letterUsed[i] = true; // Markér som brugt
             }
         }
 
+        // Andet loop: Find gule (forkert placering, men findes i ordet)
+        for (int i = 0; i < længdeAfOrd; i++) {
+            if (resultat[i] == null) { // Hvis det ikke allerede er grøn
+
+                for (int j = 0; j < længdeAfOrd; j++) {
+                    if (OrdGæt.charAt(i) == RigtigOrd.charAt(j) && !letterUsed[j]) {
+                        resultat[i] = "Gul";
+                        letterUsed[j] = true; // Markér som brugt
+                        break;
+                    }
+                }
+                if (resultat[i] == null) { // Hvis bogstavet ikke blev fundet
+                    resultat[i] = "Grå";
+                }
+            }
+        }
+
+        // Opdater UI med farver
         for (int i = 0; i < længdeAfOrd; i++) {
             switch (resultat[i]) {
                 case "Grøn" -> {
@@ -227,6 +227,7 @@ public class GameController {
         }
 
         FarveTaster();
+
     }
 
     public void FarveTaster() {
